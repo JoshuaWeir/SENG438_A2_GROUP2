@@ -2,12 +2,12 @@
 
 **Lab. Report \#2 – Requirements-Based Test Generation**
 
-| Group \#:      |     |
-| -------------- | --- |
-| Student Names: |     |
-|                |     |
-|                |     |
-|                |     |
+| Group: 2      |
+|-----------------|
+| Jana                |   
+| Robert              |   
+| Ernest               |   
+| Joshua                | 
 
 # 1 Introduction
 
