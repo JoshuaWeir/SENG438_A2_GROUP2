@@ -113,7 +113,24 @@ public class RangeTest {
     	assertEquals("Both ranges where given negative values",
     	expected, actual);
     }
-    
+	
+    @Test
+    public void GetLowerBoundFunctionality() {
+        assertEquals("The lower bound value of -1 and 1 should be -1",
+        -1, exampleRange.getLowerBound(), .000000001d);
+    }
+	
+    @Test
+    public void GetOutsideLowerBound() {
+    	assertFalse("The range should not be less than -1",exampleRange.contains(-2));
+    }
+	
+    @Test
+    public void GetLowerBoundEquivUpperBound() {
+    	Range example = new Range(1,1);
+        assertEquals("The lower bound value of 1 and 1 should be 1",
+        1, example.getLowerBound(), .000000001d);
+    }
 
     @After
     public void tearDown() throws Exception {
