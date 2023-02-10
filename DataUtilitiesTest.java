@@ -6,6 +6,7 @@ import org.junit.*;
 import org.jfree.data.Values2D;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jfree.data.KeyedValues;
 
 public class DataUtilitiesTest extends DataUtilities {
 	
