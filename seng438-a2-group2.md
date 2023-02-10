@@ -31,8 +31,13 @@ Text…
 
 # 5 Difficulties encountered, challenges overcome, and lessons learned
 
-Text…
+- testing around exceptions
+- understanding how to use mocking
+- trying consider all the test cases
+- we learned how to use eclipse
+- craeting new junit test case
+- @after and @before
 
 # 6 Comments/feedback on the lab itself
 
-Text…
+
