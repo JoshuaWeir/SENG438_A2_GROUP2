@@ -177,72 +177,72 @@ public class DataUtilitiesTest extends DataUtilities {
 	@Test
 
 	public void testGetCumulativePercentage() {
-	Mockery mockingContext = new Mockery();
-	KeyedValues exampleValue = mockingContext.mock(KeyedValues.class);
-	mockingContext.checking(new Expectations() {
-		{
+		Mockery mockingContext = new Mockery();
+		KeyedValues exampleValue = mockingContext.mock(KeyedValues.class);
+		mockingContext.checking(new Expectations() {
+			{
 
-			allowing(exampleValue).getKey(0);
-			will(returnValue(0));
-		
-			allowing(exampleValue).getKeys();
-			will(returnIterator(0,1,2));
-			
-			allowing(exampleValue).getKey(1);
-			will(returnValue(1));
-		
-			allowing(exampleValue).getKey(2);
-			will(returnValue(2));
-			
-			allowing(exampleValue).getItemCount();
-			will(returnValue(3));
-		
+				allowing(exampleValue).getKey(0);
+				will(returnValue(0));
 
-		
-			allowing(exampleValue).getValue(0);
-			will(returnValue(5));
-		
-			allowing(exampleValue).getValue(1);
-			will(returnValue(9));
-		
-			allowing(exampleValue).getValue(2);
-			will(returnValue(2));
-		
+				allowing(exampleValue).getKeys();
+				will(returnIterator(0,1,2));
+
+				allowing(exampleValue).getKey(1);
+				will(returnValue(1));
+
+				allowing(exampleValue).getKey(2);
+				will(returnValue(2));
+
+				allowing(exampleValue).getItemCount();
+				will(returnValue(3));
 
 
-		}
 
-	});
+				allowing(exampleValue).getValue(0);
+				will(returnValue(5));
 
-	Mockery mocking = new Mockery();
-	KeyedValues exampleValueOutput = mocking.mock(KeyedValues.class);
-	mocking.checking(new Expectations() {
+				allowing(exampleValue).getValue(1);
+				will(returnValue(9));
 
-		{
+				allowing(exampleValue).getValue(2);
+				will(returnValue(2));
 
-			one(exampleValueOutput).getItemCount();
-			will(returnValue(3));
-		
-			one(exampleValueOutput).getKeys();
-			will(returnIterator(0,1,2));
-		
-			one(exampleValueOutput).getValue(0);
-			will(returnValue(0.3125));
-		
-			one(exampleValueOutput).getValue(1);
-			will(returnValue(0.875));
-		
-			one(exampleValueOutput).getValue(2);
-			will(returnValue(1.0));
 
-		}
 
-	});
+			}
 
-	KeyedValues actualOutput = DataUtilities.getCumulativePercentages(exampleValue);
-	assertEquals(exampleValueOutput.getValue(0), actualOutput.getValue(0));
-	assertEquals(exampleValueOutput.getValue(1), actualOutput.getValue(1));
-	assertEquals(exampleValueOutput.getValue(2), actualOutput.getValue(2));
+		});
+
+		Mockery mocking = new Mockery();
+		KeyedValues exampleValueOutput = mocking.mock(KeyedValues.class);
+		mocking.checking(new Expectations() {
+
+			{
+
+				one(exampleValueOutput).getItemCount();
+				will(returnValue(3));
+
+				one(exampleValueOutput).getKeys();
+				will(returnIterator(0,1,2));
+
+				one(exampleValueOutput).getValue(0);
+				will(returnValue(0.3125));
+
+				one(exampleValueOutput).getValue(1);
+				will(returnValue(0.875));
+
+				one(exampleValueOutput).getValue(2);
+				will(returnValue(1.0));
+
+			}
+
+		});
+
+		KeyedValues actualOutput = DataUtilities.getCumulativePercentages(exampleValue);
+		assertEquals(exampleValueOutput.getValue(0), actualOutput.getValue(0));
+		assertEquals(exampleValueOutput.getValue(1), actualOutput.getValue(1));
+		assertEquals(exampleValueOutput.getValue(2), actualOutput.getValue(2));
 
 	}
 	
