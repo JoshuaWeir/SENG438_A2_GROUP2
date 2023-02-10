@@ -37,6 +37,7 @@ Text…
 - we learned how to use eclipse
 - craeting new junit test case
 - @after and @before
+- importance of reading methods javadoc 
 
 # 6 Comments/feedback on the lab itself
 
