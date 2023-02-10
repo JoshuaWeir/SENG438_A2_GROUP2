@@ -68,7 +68,7 @@ public class RangeTest {
     	Range r1 = new Range(10, 15);
     	Range r2 = new Range(1, 5);
     	Range actual = Range.combine(r1, r2);
-    	Range expected = null;
+    	Range expected = new Range(1,15);
     	assertEquals("Ranges do not overlap",
     	expected, actual);
     }
