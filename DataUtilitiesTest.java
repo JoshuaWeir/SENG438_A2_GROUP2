@@ -33,4 +33,67 @@ public class DataUtilitiesTest extends DataUtilities {
 				expected, actual);
 		
 	}
+	
+	@Test
+    public void test_calculatePositiveRowTotal() {
+        Mockery mock = new Mockery();
+        Values2D example = mock.mock(Values2D.class);
+        mock.checking(new Expectations() {
+            {
+                one(example).getColumnCount();
+                will(returnValue(5));
+                
+                one(example).getValue(0, 0);
+                will(returnValue(1.0));
+                
+                one(example).getValue(0, 1);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 2);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 3);
+                will(returnValue(2.5));
+            }
+        });
+        double result = DataUtilities.calculateRowTotal(example,0);
+        assertEquals("Result should be 4.5", result, 4.5, .000000001d);
+    }
+	
+	//no rows
+	@Test(expected = IllegalArgumentException.class)
+    public void test_noRows(){
+        Mockery mock = new Mockery();
+        Values2D example = mock.mock(Values2D.class);
+        mock.checking(new Expectations() {
+            {
+                one(example).getColumnCount();
+                will(returnValue(0));
+                
+            }
+        });
+    }
+	
+	@Test
+	//getting total of negative numbers
+    public void test_calculateNegativeRowTotal() {
+        Mockery mock = new Mockery();
+        Values2D example = mock.mock(Values2D.class);
+        mock.checking(new Expectations() {
+            {
+                one(example).getColumnCount();
+                will(returnValue(5));
+                one(example).getValue(0, 0);
+                will(returnValue(-1.0));
+                one(example).getValue(0, 1);
+                will(returnValue(0.5));
+                one(example).getValue(0, 2);
+                will(returnValue(-6.5));
+                one(example).getValue(0, 3);
+                will(returnValue(2.5));
+            }
+        });
+        double result = DataUtilities.calculateRowTotal(example,0);
+        assertEquals("Result should be -4.5", result, -4.5, .000000001d);
+    }
 }
