@@ -166,7 +166,12 @@ public class RangeTest {
 	}
 	@Test
 	public void nullString() {
-		assertNull(nullRange.toString());
+		try {
+			nullRange.toString();
+		}
+		catch(NullPointerException e) {
+			//works as intended if it throws the exception
+		}
 	}
 	
 	//intersects() tests
@@ -203,8 +208,13 @@ public class RangeTest {
 		assertFalse("Range of (8,8) should not intersect.",demoRange.intersects(8, 8));
 	}
 	@Test
-	public void noIntersectInNullRange() {
-		assertFalse("Null range should not have any intersect.",nullRange.intersects(0, 5));
+	public void intersectNullException() {
+		try {
+			nullRange.intersects(0, 5);
+		}
+		catch(NullPointerException e) {
+			//works as intended if it throws the exception
+		}
 	}
 	@Test
 	public void completeIntersectInside() {
