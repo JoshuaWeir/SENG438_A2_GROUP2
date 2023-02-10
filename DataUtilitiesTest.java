@@ -1,11 +1,42 @@
 package org.jfree.data.test;
 
 import static org.junit.Assert.*;
-
 import org.jfree.data.DataUtilities;
-import org.junit.Test;
+import org.junit.*;
+import org.jfree.data.Values2D;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 
 public class DataUtilitiesTest extends DataUtilities {
+	
+	private Values2D mockValues;
+	private double[] doubleArray;
+	
+	@BeforeClass public static void setUpBeforeClass() throws Exception {
+	}
+	@Before
+	public void setUp() throws Exception { 
+		Mockery mockingContext = new Mockery();
+		final Values2D values = mockingContext.mock(Values2D.class);
+		mockingContext.checking(new Expectations() {
+			{
+				one(values).getRowCount();
+				will(returnValue(2));
+				one(values).getColumnCount();
+				will(returnValue(2));
+				one(values).getValue(0, 0);
+				will(returnValue(3));
+				one(values).getValue(0, 1);
+				will(returnValue(6));
+				one(values).getValue(1, 0);
+				will(returnValue(4));
+				one(values).getValue(1, 1);
+				will(returnValue(8));
+			}
+		});
+		mockValues = values;
+		doubleArray = new double[] {1.2,3.4,5.5,9.6};
+	}
 
 	@Test
 	public void validDoubleArrayProvided() {
@@ -96,4 +127,47 @@ public class DataUtilitiesTest extends DataUtilities {
         double result = DataUtilities.calculateRowTotal(example,0);
         assertEquals("Result should be -4.5", result, -4.5, .000000001d);
     }
+	
+	//calculateColumnTotal() tests
+	@Test
+	public void sumColumnZero() {
+		assertEquals("Sum of column 0 should be 7.", 7, DataUtilities.calculateColumnTotal(mockValues, 0), 0.000000001d);
+	}
+	@Test
+	public void sumColumnOne() {
+		assertEquals("Sum of column 1 should be 14.", 14, DataUtilities.calculateColumnTotal(mockValues, 1), 0.000000001d);
+	}
+	@Test
+	public void nullTable() {
+		DataUtilities.calculateColumnTotal(null, 0);
+		//assertNull("Null table should not return a value.", DataUtilities.calculateColumnTotal(null, 0));
+	}
+	@Test
+	public void nonExistantColumn() {
+		DataUtilities.calculateColumnTotal(mockValues, 2);
+		//assertNull("Non existent column should not return a value.", DataUtilities.calculateColumnTotal(mockValues, 2));
+	}
+	
+	//createNumberArray() tests
+	@Test
+	public void arrayExists() {
+		assertNotNull("Number array should exist.", DataUtilities.createNumberArray(doubleArray));
+	}
+	@Test
+	public void nullArray() {
+		double[] nullArray = null;
+		DataUtilities.createNumberArray(nullArray);
+	}
+	@Test
+	public void correctValues() {
+		Number[] numberArray = new Number[] {1.2,3.4,5.5,9.6};
+		assertArrayEquals("Number array should have same values as original array.", numberArray, DataUtilities.createNumberArray(doubleArray));
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+	}
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
 }
