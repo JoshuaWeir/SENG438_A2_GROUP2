@@ -38,7 +38,77 @@ public class DataUtilitiesTest extends DataUtilities {
 		mockValues = values;
 		doubleArray = new double[] {1.2,3.4,5.5,9.6};
 	}
+//////////////////////////////////////////NEW
+	@Test
+		public void test_equal_difflength() {
+		double[][] data = {{3.2, 3.5}, {2.1, 7.5}};
+		double[][] data2 = {{3.2, 3.5}, {2.1, 7.5}, {7.0, 5.5}};
+		assertFalse(DataUtilities.equal(data,  data2));
+	}
+	
+	@Test 
+		public void test_equal_dataNull(){
+		double[][] data = null;
+		double[][] data2 = {{3.2, 3.5}, {2.1, 7.5}};
+		assertFalse(DataUtilities.equal(data,  data2));
+	}
+	@Test 
+		public void test_equal_data2Null(){
+		double[][] data = {{3.2, 3.5}, {2.1, 7.5}};
+		double[][] data2 = null;
+		assertFalse(DataUtilities.equal(data,  data2));
+	}
+	
+	@Test
+		public void test_clone() {
+		double[][] data = {{1, 2, 3}, {4, 9.7, 5}};
+		double[][] data2 = clone(data);
+		assertArrayEquals(data,data2);
+	}
+	//61.6% does not increase
+	//@Test (expected = IllegalArgumentException.class)
+	//public void test_clone_Null() {
+	//double[][] data = null;
+	//double[][] data2 = clone(data);
+	//}
+	
+	//@Test
+	//public void test_clone_change() {
+	//double[][] data = {{1, 2, 3}, {4, 5.5, 6}, {7, 8, 9}};
+	//double[][] data2 = {{10, 11, 12}, {13, 14, 14.9}};
+	//data2 = clone(data);
+	//assertArrayEquals(data,data2);
+	//}
+	//@Test
+	//public void test_createNumberArrayFunction() {
+	//double data1 = 1;
+	//double data2 = 2;
+	//double data3 = 3;
+	//double data4 = 4;
+	//double [] arr = {1, 2, 3, 4};
+	//Number array[] = new Number[4];
+	//array[0] = data1;
+	//array[1] = data2;
+	//array[2] = data3;
+	//array[3] = data4;
+	//Number[] resultArray = DataUtilities.createNumberArray(arr);
+	//assertArrayEquals(array, resultArray);
+	//}
+	@Test
+		public void test_equal_inf() {
+		double[][] a = {{Double.POSITIVE_INFINITY, 0, -3}, {Double.POSITIVE_INFINITY, -4, 8.5}};
+		double[][] b = {{Double.POSITIVE_INFINITY, 0, -3}, {Double.POSITIVE_INFINITY, -4, 8.5}};
+		assertTrue(DataUtilities.equal(a,  b));
+	}
+	
+	@Test
+	public void test_equal_neginf() {
+	double[][] a = {{Double.NEGATIVE_INFINITY, 0, -3}, {Double.NEGATIVE_INFINITY, -4, 8.5}};
+	double[][] b = {{Double.NEGATIVE_INFINITY, 0, -3}, {Double.NEGATIVE_INFINITY, -4, 8.5}};
+	assertTrue(DataUtilities.equal(a,  b));
+	}
 
+/////////////////////////////////////////
 	@Test
 	public void validDoubleArrayProvided() {
 		double[][] data = {{1,2,3,4,5}, {6,7,8,9,0}, 
