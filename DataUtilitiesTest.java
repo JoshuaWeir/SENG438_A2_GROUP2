@@ -228,6 +228,33 @@ public class DataUtilitiesTest extends DataUtilities {
     }
 	
 	@Test
+    public void calculateNegativeRowTotal() {
+        Mockery mock = new Mockery();
+        Values2D example = mock.mock(Values2D.class);
+        mock.checking(new Expectations() {
+            {
+                one(example).getColumnCount();
+                will(returnValue(-5));
+                
+                one(example).getValue(0, 0);
+                will(returnValue(1.0));
+                
+                one(example).getValue(0, 1);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 2);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 3);
+                will(returnValue(2.5));
+            }
+        });
+        double result = DataUtilities.calculateRowTotal(example,0);
+        assertEquals("Result should be 4.5", result, 4.5, .000000001d);
+    }
+	
+	
+	@Test
     public void calculatePositiveRowTotalSpecCol() {
         Mockery mock = new Mockery();
         Values2D example = mock.mock(Values2D.class);
@@ -289,6 +316,33 @@ public class DataUtilitiesTest extends DataUtilities {
             {
                 one(example).getColumnCount();
                 will(returnValue(5));
+                
+                one(example).getValue(0, 0);
+                will(returnValue(1.0));
+                
+                one(example).getValue(0, 1);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 2);
+                will(returnValue(0.5));
+                
+                one(example).getValue(0, 3);
+                will(returnValue(2.5));
+            }
+        });
+        int[] col = {1};
+        double result = DataUtilities.calculateColumnTotal(example,0);
+        assertEquals("Result should be 4.5", result, 4.5, .000000001d);
+    }
+	
+	@Test
+    public void calculateNegativeColTotal() {
+        Mockery mock = new Mockery();
+        Values2D example = mock.mock(Values2D.class);
+        mock.checking(new Expectations() {
+            {
+                one(example).getRowCount();
+                will(returnValue(-5));
                 
                 one(example).getValue(0, 0);
                 will(returnValue(1.0));
@@ -418,6 +472,78 @@ public class DataUtilitiesTest extends DataUtilities {
 	
 	///////////////////////////////////////////
 	@Test
+	
+	public void CcumulativePercentageNegCount() {
+		Mockery mockingContext = new Mockery();
+		KeyedValues exampleValue = mockingContext.mock(KeyedValues.class);
+		mockingContext.checking(new Expectations() {
+		{
+			
+			allowing(exampleValue).getKey(0);
+			will(returnValue(0));
+			
+			allowing(exampleValue).getKeys();
+			will(returnIterator(0,1,2));
+			
+			allowing(exampleValue).getKey(1);
+			will(returnValue(1));
+			
+			allowing(exampleValue).getKey(2);
+			will(returnValue(2));
+			
+			allowing(exampleValue).getItemCount();
+			will(returnValue(-3));
+			
+			
+			
+			allowing(exampleValue).getValue(0);
+			will(returnValue(5));
+			
+			allowing(exampleValue).getValue(1);
+			will(returnValue(9));
+			
+			allowing(exampleValue).getValue(2);
+			will(returnValue(2));
+			
+			
+			
+		}
+	
+	});
+	
+		Mockery mocking = new Mockery();
+		KeyedValues exampleValueOutput = mocking.mock(KeyedValues.class);
+		mocking.checking(new Expectations() {
+		
+		{
+	
+			one(exampleValueOutput).getItemCount();
+			will(returnValue(-3));
+			
+			one(exampleValueOutput).getKeys();
+			will(returnIterator(0,1,2));
+			
+			one(exampleValueOutput).getValue(0);
+			will(returnValue(0.3125));
+			
+			one(exampleValueOutput).getValue(1);
+			will(returnValue(0.875));
+			
+			one(exampleValueOutput).getValue(2);
+			will(returnValue(1.0));
+			
+		}
+	
+	});
+	
+		KeyedValues actualOutput = DataUtilities.getCumulativePercentages(exampleValue);
+		assertEquals(exampleValueOutput.getValue(0), actualOutput.getValue(0));
+		assertEquals(exampleValueOutput.getValue(1), actualOutput.getValue(1));
+		assertEquals(exampleValueOutput.getValue(2), actualOutput.getValue(2));
+	
+	}
+	///////////////////////////////////////////
+	@Test
 
 	public void testGetCumulativePercentage() {
 		Mockery mockingContext = new Mockery();
@@ -489,6 +615,8 @@ public class DataUtilitiesTest extends DataUtilities {
 
 	}
 	
+	
+	
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -496,4 +624,3 @@ public class DataUtilitiesTest extends DataUtilities {
 	public static void tearDownAfterClass() throws Exception {
 	}
 }
-
