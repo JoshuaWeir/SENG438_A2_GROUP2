@@ -354,7 +354,7 @@ public class RangeTest {
 	public void getLengthValueTest() {
 		Range r = new Range(1,2);
 		double expected = 1.0;
-		double actual = r.getCentralValue();
+		double actual = r.getLength();
 		assertEquals("Testing proper length value.", expected, actual, 0.000001d);
 	}	
 	
