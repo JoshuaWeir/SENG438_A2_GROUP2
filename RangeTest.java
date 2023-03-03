@@ -225,6 +225,85 @@ public class RangeTest {
 		assertTrue("Range encapsulating outside should intersect.",demoRange.intersects(-13, 13));
 	}
 	
+	//NEW
+	@Test
+	public void partialIntersectRight() {
+		Range right = new Range(3,8);
+		assertTrue("Range should intersect.",demoRange.intersects(right));
+	}
+	@Test
+	public void partialIntersectLeft() {
+		Range left = new Range(-8,-3);
+		assertTrue("Range should intersect.",demoRange.intersects(left));
+	}
+	
+	@Test
+    public void firstNullValueGivenNaN() {
+    	Range expected = new Range(3.8, 10.0);
+    	Range actual = Range.combineIgnoringNaN(null, expected);
+        assertEquals("One null value given return should be equal to the non-null value",
+        expected, actual);
+    }
+
+    @Test
+    public void secondNullValueGivenNaN() {
+        Range expected = new Range(2.4, 2.8);
+        Range actual = Range.combineIgnoringNaN(expected, null);
+        assertEquals("One null value given return should be equal to the non-null value",
+        expected, actual);
+    }
+    
+    @Test
+    public void bothNullGivenNaN() {
+    	Range actual = Range.combineIgnoringNaN(null, null);
+    	assertNull("Two null values given should return null",
+    	actual);
+    }
+    @Test
+    public void incompleteOverlapRange2LessThanRange1NaN() {
+    	Range r1 = new Range(2, 4);
+    	Range r2 = new Range(1, 3);
+    	Range actual = Range.combineIgnoringNaN(r1, r2);
+    	Range expected = new Range(1, 4);
+    	assertEquals("Ranges of incomplete overlap", expected, actual);
+    }
+    @Test
+    public void bothNaNGiven() {
+    	Range isNaN = new Range(Double.NaN,Double.NaN);
+    	Range actual = Range.combineIgnoringNaN(isNaN, isNaN);
+    	assertNull("Two NaN values given should return null",
+    	actual);
+    }
+    @Test
+    public void OneNullTwoNaN() {
+    	Range isNaN = new Range(Double.NaN,Double.NaN);
+    	Range actual = Range.combineIgnoringNaN(isNaN, null);
+    	assertNull("One NaN value given should return null",
+    	actual);
+    }
+    @Test
+    public void TwoNullOneNaN() {
+    	Range isNaN = new Range(Double.NaN,Double.NaN);
+    	Range actual = Range.combineIgnoringNaN(null, isNaN);
+    	assertNull("One NaN value given should return null",
+    	actual);
+    }
+    
+    @Test
+    public void getUpperBoundFuncionality() {
+    	assertEquals("Upper bound should be 5.", 5, demoRange.getUpperBound(), .000000001d);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void createValuesBackwards() {
+    	Range r = new Range(5,-5);
+    }
+    @Test
+    public void testNaNRange() {
+    	Range nanRange = new Range(Double.NaN,Double.NaN);
+    	assertTrue("Range is NaN.",nanRange.isNaNRange());
+    }
+	//END
+	
 
 
     @After
