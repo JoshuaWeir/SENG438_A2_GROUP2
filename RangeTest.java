@@ -442,6 +442,48 @@ public class RangeTest {
 		Range expected = new Range(2, 4);
 		assertEquals("Should Properly scale the factor", actual, expected);
 	}
+	
+		@Test
+	public void zeroCrossingShiftTest() {
+		double delta = 2.5;
+		Range r = new Range(-2, 7.5);
+		Range actual = Range.shift(r, delta, true);
+		Range expected = new Range(0.5, 10.0);
+		assertEquals("Shift while crossing zero", expected, actual);
+	}
+	
+	@Test
+	public void noZeroCrossing() {
+		Range r = new Range(-1.0, 2.0);
+		double delta = 0.5;
+		Range actual = Range.shift(r, delta);
+		Range expected = new Range(-0.5, 2.5);
+		assertEquals("Range shifted with no zero crossing", expected, actual);
+	}
+	
+	@Test
+	public void noZeroCrossing2() {
+		Range r = new Range(-1, 0);
+		double delta = 2;
+		Range actual = Range.shift(r, delta);
+		Range expected = new Range(0, 2);
+		assertEquals("Range shifted with zero crossing but not permitted", expected, actual);
+	}
+	
+	//Tests for hashcode
+	
+	@Test
+	public void hashcodeTest() {
+		Range r = new Range(1,2);
+		int actual = r.hashCode();
+        int expected;
+        long temp;
+        temp = Double.doubleToLongBits(1);
+        expected = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(2);
+        expected = 29 * expected + (int) (temp ^ (temp >>> 32));
+        assertEquals("Hashcode being generated", expected, actual);
+	
 	//END
 	
 
