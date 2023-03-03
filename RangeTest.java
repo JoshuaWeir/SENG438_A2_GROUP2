@@ -483,8 +483,32 @@ public class RangeTest {
         temp = Double.doubleToLongBits(2);
         expected = 29 * expected + (int) (temp ^ (temp >>> 32));
         assertEquals("Hashcode being generated", expected, actual);
+	}
 	
-	//END
+	@Test
+    public void OneNaNRange() {
+    	Range isNaN = new Range(Double.NaN,Double.NaN);
+    	Range actual = Range.combineIgnoringNaN(demoRange,isNaN);
+    	assertEquals("Result range should be demoRange.", demoRange, actual);
+    }
+	
+	//tests for expand with margins
+	
+	@Test
+	public void expandPercentile() {
+		Range evenTen = new Range (-10,10);
+		Range actual = Range.expand(evenTen, 0.1, 0.1);
+		Range expected = new Range(-12,12);
+		assertEquals("New Range should be (-12,12) after adding 10% margins.",expected,actual);
+	}
+	
+	@Test
+	public void expandPercentileBackwards() {
+		Range evenTen = new Range (-10,10);
+		Range actual = Range.expand(evenTen, -1.1, 0);
+		Range expected = new Range(11,11);
+		assertEquals("New Range should be (11,11) after adding margins.",expected,actual);
+	}
 	
 
 
