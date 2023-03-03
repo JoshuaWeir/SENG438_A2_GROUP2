@@ -302,6 +302,146 @@ public class RangeTest {
     	Range nanRange = new Range(Double.NaN,Double.NaN);
     	assertTrue("Range is NaN.",nanRange.isNaNRange());
     }
+	
+//Tests for equals
+
+	@Test
+	public void twoobjectsEqual() {
+		Range r1 = new Range(0, 1.1);
+		Range r2 = new Range(0, 1.1);
+		boolean expected = true;
+		boolean actual = r1.equals(r2);
+		assertEquals("Two Equals ranges given", expected, actual);
+	}
+	
+	@Test public void twoObjectsNotEqualUpperTest() {
+		Range r1 = new Range(0, 1.1);
+		Range r2 = new Range(0, 1.2);
+		boolean expected = false;
+		boolean actual = r1.equals(r2);
+		assertEquals("Two Equals ranges given", expected, actual);		
+	} 
+	
+	@Test public void twoObjectsNotEqualLowerTest() {
+		Range r1 = new Range(0, 1.1);
+		Range r2 = new Range(1, 1.1);
+		boolean expected = false;
+		boolean actual = r1.equals(r2);
+		assertEquals("Two Equals ranges given", expected, actual);		
+	} 
+	
+	@Test
+	public void oneObjectNotRangeTest() {
+		Range r1 = new Range(0,1.1);
+		KeyedObjects2D u1 = new KeyedObjects2D();
+		boolean expected = false;
+		boolean actual = r1.equals(u1);
+		assertEquals("One object is not of type Range", expected, actual);
+	}
+	
+	//Tests for getCentralValue
+	
+	@Test
+	public void getCentralValueTest() {
+		Range r = new Range(1,2);
+		double expected = 1.5;
+		double actual = r.getCentralValue();
+		assertEquals("Testing proper central value.", expected, actual, 0.000001d);
+	}
+	
+	//Tests for getLength
+	@Test
+	public void getLengthValueTest() {
+		Range r = new Range(1,2);
+		double expected = 1.0;
+		double actual = r.getCentralValue();
+		assertEquals("Testing proper length value.", expected, actual, 0.000001d);
+	}	
+	
+	//Tests for constrain
+	
+	@Test
+	public void valueBelowBoundsTest() {
+		double val = 1.2;
+		Range r = new Range(2, 3);
+		double actual = r.constrain(val);
+		double expected = 2.0;
+		assertEquals("Value was below lower bounds", expected, actual, 0.000001d);
+	}
+
+	@Test
+	public void valueAboveBoundsTest() {
+		double val = 3.2;
+		Range r = new Range(2, 3);
+		double actual = r.constrain(val);
+		double expected = 3.0;
+		assertEquals("Value was below lower bounds", expected, actual, 0.000001d);
+	}
+	
+	@Test
+	public void valueInsideBoundsTest() {
+		double val = 2.5;
+		Range r = new Range(2, 3);
+		double actual = r.constrain(val);
+		double expected = 2.5;
+		assertEquals("Value was below lower bounds", expected, actual, 0.000001d);
+	}
+	
+	//Tests for expand to include
+	
+	@Test
+	public void nullRangeGivenTest() {
+		double val = 2.5;
+		Range r = null;
+		Range actual = Range.expandToInclude(r, val);
+		Range expected = new Range(2.5, 2.5);
+		assertEquals("Null range given range return to just be value given", expected, actual);
+	}
+	
+	@Test
+	public void valueLessThanLowerTest() {
+		double val = 2.5;
+		Range r = new Range(4, 5);
+		Range actual = Range.expandToInclude(r, val);
+		Range expected = new Range(2.5, 5);
+		assertEquals("Value was less than lower bound of range", expected, actual);
+	}
+	
+	@Test
+	public void valueGreaterThanUpperTest() {
+		double val = 7.5;
+		Range r = new Range(4, 5);
+		Range actual = Range.expandToInclude(r, val);
+		Range expected = new Range(4, 7.5);
+		assertEquals("Value was greater than upper bound of range", expected, actual);
+	}
+	
+	@Test
+	public void valueInBetweenTest() {
+		double val = 4.5;
+		Range r = new Range(4, 5);
+		Range actual = Range.expandToInclude(r, val);
+		Range expected = new Range(4, 5);
+		assertEquals("Value was in bewteen the range bounds", expected, actual);
+	}
+	
+	//Tests for Scale
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void factorIsNegativeTest() {
+		double factor = -1;
+		Range r = new Range(1, 2);
+		Range actual = Range.scale(r, factor);
+	}
+	
+	@Test
+	public void validFactorTest() {
+		double factor = 2;
+		Range r = new Range(1,2);
+		Range actual = Range.scale(r, factor);
+		Range expected = new Range(2, 4);
+		assertEquals("Should Properly scale the factor", actual, expected);
+	}
 	//END
 	
 
